@@ -1,8 +1,8 @@
 import { check, ValidationChain } from "express-validator";
 import { Request, Response, NextFunction } from "express";
-import RequestValidator from "../../core/RequestValidator";
+import Validator from "../../core/Validator";
 
-export default class AllMovieRequest extends RequestValidator {
+export default class AllMovieRequest extends Validator {
   public static async validate(req: Request, res: Response, next: NextFunction) {
     const validations: ValidationChain[] = [
       check("search").optional({ nullable: true, checkFalsy: true }),

@@ -1,8 +1,8 @@
 import { check, ValidationChain } from "express-validator";
 import { Request, Response, NextFunction } from "express";
-import RequestValidator from "../../core/RequestValidator";
+import Validator from "../../core/Validator";
 
-export default class LoginAuthRequest extends RequestValidator {
+export default class LoginAuthRequest extends Validator {
   public static async validate(req: Request, res: Response, next: NextFunction) {
     const validations: ValidationChain[] = [
       check("username")

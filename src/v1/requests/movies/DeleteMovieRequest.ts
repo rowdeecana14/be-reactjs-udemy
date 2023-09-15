@@ -1,10 +1,10 @@
 import { check, ValidationChain } from "express-validator";
 import { Request, Response, NextFunction } from "express";
 import { Types } from "mongoose";
-import RequestValidator from "../../core/RequestValidator";
+import Validator from "../../core/Validator";
 import Movie from "../../models/Movie";
 
-export default class DeleteMovieRequest extends RequestValidator {
+export default class DeleteMovieRequest extends Validator {
   public static async validate(req: Request, res: Response, next: NextFunction) {
     const validations: ValidationChain[] = [
       check("id")

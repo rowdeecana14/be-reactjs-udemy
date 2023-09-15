@@ -1,8 +1,8 @@
 import { Request, Response, NextFunction } from "express";
-import { validationResult, matchedData, Result, ValidationError } from "express-validator";
+import { validationResult, matchedData, Result, ValidationError, ValidationChain } from "express-validator";
 import { StatusCodes } from "http-status-codes";
 
-export default class ValidatorHelper {
+export default class Validator {
   public static validation(
     req: Request,
     res: Response,
@@ -10,13 +10,14 @@ export default class ValidatorHelper {
     validations: any[]
   ): void {
     Promise.all(validations.map((validation) => validation.run(req))).then(() => {
-      const errors = ValidatorHelper.errors(req);
+      const errors = Validator.errors(req);
 
       if (errors.isEmpty()) {
-        (req as any).validated = matchedData(req, {
-          includeOptionals: false,
-        });
+        (req as any).validated = Validator.validated(req);
         return next();
+      }
+      else {
+        (req as any).validated = null;
       }
 
       return res.status(StatusCodes.UNPROCESSABLE_ENTITY).json({
@@ -34,7 +35,14 @@ export default class ValidatorHelper {
     });
   }
 
-  static validated(req: Request) {
-    return matchedData(req, { includeOptionals: false });
+  static validated<T>(req: Request): Record<string, T> {
+    const validated = matchedData(req, { includeOptionals: false });
+
+    return Object.entries(validated).reduce((acc, [key, value]) => {
+      if (value !== undefined) {
+        acc[key] = value;
+      }
+      return acc;
+    }, {} as Record<string, T>);
   }
 }

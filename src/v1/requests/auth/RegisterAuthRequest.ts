@@ -1,10 +1,10 @@
 import { check, ValidationChain } from "express-validator";
 import { Request, Response, NextFunction } from "express";
-import RequestValidator from "../../core/RequestValidator";
+import Validator from "../../core/Validator";
 import User from "../../models/User";
 import { STATUSES } from "../../utils/enums/UserEnum";
 
-export default class RegisterAuthRequest extends RequestValidator {
+export default class RegisterAuthRequest extends Validator {
   public static async validate(req: Request, res: Response, next: NextFunction) {
     const validations: ValidationChain[] = [
       check("name")

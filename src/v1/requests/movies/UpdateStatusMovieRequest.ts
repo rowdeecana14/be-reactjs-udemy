@@ -1,7 +1,7 @@
 import { check, ValidationChain } from "express-validator";
 import { Request, Response, NextFunction } from "express";
 import { Types } from "mongoose";
-import RequestValidator from "../../core/RequestValidator";
+import Validator from "../../core/Validator";
 import Movie from "../../models/Movie";
 import { STATUSES } from "../../utils/enums/MovieEnum";
 
@@ -11,7 +11,7 @@ interface IId {
   valid: boolean;
 }
 
-export default class UpdateStatusMovieRequest extends RequestValidator {
+export default class UpdateStatusMovieRequest extends Validator {
   public static async validate(req: Request, res: Response, next: NextFunction) {
     const validations: ValidationChain[] = [
       check("ids")
