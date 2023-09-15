@@ -1,0 +1,98 @@
+# @baseurl = http://119.12.166.178:1010/api/v1
+@baseurl = http://127.0.0.1:1010/api/v1
+@token = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NTA0NzFjZDIwNTA5ZDM3ZjQwZGQzOGMiLCJuYW1lIjoiUnVkeSBDYW5hIiwidXNlcm5hbWUiOiJSdWR5IENhbmEiLCJpYXQiOjE2OTQ3OTQxNjQsImV4cCI6MTY5NDg4MDU2NH0.eSAldNcPE4m6-kabjTD6UYKI7tYWFcARBrVTz46JEBw
+
+### USER LOGIN
+POST {{baseurl}}/auth/login HTTP/1.1
+Content-Type: application/json
+Accept: application/json
+
+{
+    "username": "rudy.cana@gmail.com",
+    "password": "password"
+}
+
+
+### USER REGISTER
+POST {{baseurl}}/auth/register HTTP/1.1
+Content-Type: application/json
+Accept: application/json
+
+{
+  "name" : "Rudy Canssdasss",
+  "email" : "rudy.cansssdsssa@gmail.com",
+  "password": "Rowdee@14",
+  "confirm_password": "Rowdee@14"
+}
+
+### REFRESH TOKEN
+GET {{baseurl}}/auth/token HTTP/1.1
+Content-Type: application/json
+Accept: application/json
+
+
+### USER PROFILE
+GET {{baseurl}}/auth/profile
+Authorization: Bearer {{token}}
+Content-Type: application/json
+Accept: application/json
+
+
+### GET USER DETIALS FOR PASSWORD CHECKING
+GET {{baseurl}}/auth/user
+Authorization: Bearer {{token}}
+Content-Type: application/json
+Accept: application/json
+
+
+// USER PROFILE
+// GET {{baseurl}}/auth/profile/files{{system_name}}
+// system_name = UP-20230316-210303.pdf
+### VIEW ONE FILE USER PROFILE
+GET {{baseurl}}/auth/profile/files/PR-20230630-212321.jpg HTTP/1.1
+Authorization: Bearer {{token}}
+Content-Type: application/json
+Accept: application/json
+
+
+### USER PROFILE
+PUT {{baseurl}}/auth/profile HTTP/1.1
+Authorization: Bearer {{token}}
+Content-Type: application/json
+Accept: application/json
+
+{
+		"name" : "Rudy Cana updated",
+    "password": "password",
+    "confirm_password": "password"
+}
+
+### UPDATE USER PASSWORD
+// USE LINK TOKEN
+PUT {{baseurl}}/auth/password HTTP/1.1
+Authorization: Bearer {{token}}
+Content-Type: application/json
+Accept: application/json
+
+### UPLOAD USER PROFILE
+PUT {{baseurl}}/auth/profile/upload
+Authorization: Bearer {{token}}
+Content-Type: multipart/form-data; boundary=uploadboundery
+Content-Length: [actual-content-length]
+
+--uploadboundery
+Content-Disposition: form-data; name="profile"; filename="profile.jpg"
+
+
+< ./profile.jpg
+--uploadboundery--
+
+
+
+### USER LOGOUT
+POST {{baseurl}}/auth/logout HTTP/1.1
+Authorization: Bearer {{token}}
+Content-Type: application/json
+Accept: application/json
+
+

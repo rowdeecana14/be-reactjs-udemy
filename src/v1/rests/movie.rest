@@ -1,0 +1,142 @@
+@baseurl = http://127.0.0.1:1010/api/v1
+@token =  eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NTA0NzFjZDIwNTA5ZDM3ZjQwZGQzOGMiLCJuYW1lIjoiUnVkeSBDYW5hIiwidXNlcm5hbWUiOiJSdWR5IENhbmEiLCJpYXQiOjE2OTQ3OTQyMzEsImV4cCI6MTY5NDg4MDYzMX0.Hwn2_Oygo1IcOgwymjNqsxORB3xLWHOKLZ5Ref5s12M
+
+### ALL MOVIES
+GET  {{baseurl}}/movies?search=&sort_dir=DESC&sort_col=summary&page=2&limit=10 HTTP/1.1
+Authorization: Bearer {{token}}
+Content-Type: application/json
+Accept: application/json
+
+
+### GET ONE MOVIE
+GET {{baseurl}}/movies/65017f1660883b4fb0079e1f HTTP/1.1
+Authorization: Bearer {{token}}
+Content-Type: application/json
+Accept: application/json
+
+
+### CREATE ONE MOVIE
+POST  {{baseurl}}/movies/ HTTP/1.1
+Authorization: Bearer {{token}}
+Content-Type: application/json
+Accept: application/json
+
+{
+  "title" : "search 3ssssSssS",
+  "summary" : "This is summary",
+  "url": "https://www.youtube.com/watch?v=ACudfAWUYzc",
+  "release_at" : "2023-09-10"
+}
+
+### UPDATE ONE MOVIE
+PUT  {{baseurl}}/movies/6503dad3489ee457c559546a HTTP/1.1
+Authorization: Bearer {{token}}
+Content-Type: application/json
+Accept: application/json
+
+{
+  "title" : "search updated",
+  "summary" : "This is summary updated",
+  "url": "https://www.youtube.com/watch?v=ACudfAWUYzc",
+  "release_at" : "2023-09-10"
+}
+
+
+### DELETE ONE MOVIE
+DELETE  {{baseurl}}/movies/6503dad3489ee457c559546a HTTP/1.1
+Authorization: Bearer {{token}}
+Content-Type: application/json
+Accept: application/json
+
+
+### GET MOVIES BY IDS
+GET  {{baseurl}}/movies/bulk HTTP/1.1
+Authorization: Bearer {{token}}
+Content-Type: application/json
+Accept: application/json
+
+{
+  "ids" : [
+    "650178d8ad17bd34cebf7cbb", "65017f1660883b4fb0079e1b",
+    "65017f1660883b4fb0079e1e", "65017f1660883b4fb0079e1f"
+    ]
+}
+
+### UPDATE MOVIE STATUS BY IDS
+POST  {{baseurl}}/movies/bulk/status HTTP/1.1
+Authorization: Bearer {{token}}
+Content-Type: application/json
+Accept: application/json
+
+{
+  "ids" : ["650178d8ad17bd34cebf7cbb", "65017f1660883b4fb0079e1b"],
+  "status": "Completed"
+}
+
+
+### CREATE MANY MOVIES
+POST  {{baseurl}}/movies/bulk HTTP/1.1
+Authorization: Bearer {{token}}
+Content-Type: application/json
+Accept: application/json
+
+{
+  "movies": [
+    {
+      "title" : "title 1",
+      "summary" : "summary 1",
+      "url": "https://www.youtube.com/watch?v=ACudfAWUYzc",
+      "release_at" : "2023-09-10"
+    },
+    {
+      "title" : "title 2",
+      "summary" : "summary 2",
+      "url": "https://www.youtube.com/watch?v=ACudfAWUYzc",
+      "release_at" : "2023-09-10"
+    },
+    {
+      "title" : "title 3",
+      "summary" : "summary 3",
+      "url": "https://www.youtube.com/watch?v=ACudfAWUYzc",
+      "release_at" : "2023-09-10"
+    },
+    {
+      "title" : "title 4",
+      "summary" : "summary 4",
+      "url": "https://www.youtube.com/watch?v=ACudfAWUYzc",
+      "release_at" : "2023-09-10"
+    },
+    {
+      "title" : "title 45",
+      "summary" : "summary 5",
+      "url": "https://www.youtube.com/watch?v=ACudfAWUYzc",
+      "release_at" : "2023-09-10"
+    }
+  ]
+}
+
+
+### UPDATE MANY MOVIES
+PUT  {{baseurl}}/movies/bulk HTTP/1.1
+Authorization: Bearer {{token}}
+Content-Type: application/json
+Accept: application/json
+
+{
+  "movies": [
+    {
+      "id": "6503db50489ee457c5595489",
+      "title" : "title 10 updated",
+      "summary" : "summary 1 updated",
+      "url": "https://www.youtube.com/watch?v=ACudfAWUYzc",
+      "release_at" : "2023-09-10"
+    },
+    {
+      "id": "65017f1660883b4fb0079e1b",
+      "title" : "title 43 updated",
+      "summary" : "summary 2 updated",
+      "url": "https://www.youtube.com/watch?v=ACudfAWUYzc",
+      "release_at" : "2023-09-10"
+    }
+  ]
+}
