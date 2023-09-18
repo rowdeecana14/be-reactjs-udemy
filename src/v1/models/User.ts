@@ -1,7 +1,8 @@
 import mongoose from "mongoose";
+import PasswordHelper from "../helpers/PasswordHelper";
 import { STATUSES } from "../utils/enums/UserEnum";
 
-const schema = new mongoose.Schema(
+const schema: mongoose.Schema = new mongoose.Schema(
   {
     name: {
       type: String,
@@ -54,7 +55,6 @@ const schema = new mongoose.Schema(
     },
   },
   { 
-    modelName: 'User',  
     collection: 'users' 
   },
 );

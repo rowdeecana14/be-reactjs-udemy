@@ -7,14 +7,14 @@ class Backup {
   private static instance: Backup;
   private static mongoose: any = null;
 
-  public static getInstance(): Backup {
+  public static getInstance() {
     if (!Backup.instance) {
       Backup.instance = new Backup();
     }
     return Backup.instance;
   }
 
-  public static async database(): Promise<void> {
+  public static async database() {
     console.log(`========= START DATABASE BACKUP =========`);
     const backup_dir = path.join(process.cwd(), "src/v1/database/backup");
 

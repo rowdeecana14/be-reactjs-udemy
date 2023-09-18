@@ -4,7 +4,7 @@ import Seeder from "../../core/Seeder";
 
 export default class UserSeeder {
   public async up(): Promise<void> {
-    await Seeder.insertMany(User, data);
+    await Seeder.insertData(User, data);
   }
 
   public async down(): Promise<void> {

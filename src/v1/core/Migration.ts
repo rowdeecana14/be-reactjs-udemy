@@ -6,7 +6,7 @@ class Migration {
   private migrations: any[] = [];
   private database: any = null;
 
-  public static getInstance(): Migration {
+  public static getInstance() {
     if (!Migration.instance) {
       Migration.instance = new Migration();
     }
@@ -20,7 +20,7 @@ class Migration {
     });
   }
 
-  public async run(): Promise<void> {
+  public async run() {
     if (process.env.NODE_ENV !== "development") {
       console.log(`========= Database migration run only in DEVELOPMENT ENVIRONMENT =========`);
       return;
@@ -48,7 +48,7 @@ class Migration {
     console.error(`========= END DATABASE MIGRATION =========`);
   }
 
-  public async createTable(Model: any): Promise<void> {
+  public async createTable(Model: any) {
     const name = Model.collection.name;
 
     try {
@@ -60,7 +60,7 @@ class Migration {
     }
   }
 
-  public async dropTable(Model: any): Promise<void> {
+  public async dropTable(Model: any) {
     const name = Model.collection.name;
 
     try {
@@ -78,7 +78,7 @@ class Migration {
     }
   }
 
-  private async hasCollection(table: string): Promise<boolean> {
+  private async hasCollection(table: string) {
     const collections: [] = await this.database.db.listCollections().toArray();
 
     return collections.some((collection: any) => {

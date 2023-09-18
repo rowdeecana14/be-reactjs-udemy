@@ -3,6 +3,7 @@ import { Request, Response, NextFunction } from "express";
 import { Types } from "mongoose";
 import Validator from "../../core/Validator";
 import Movie from "../../models/Movie";
+import { ACTIONS } from "../../utils/enums/ControllerEnum";
 
 export default class UpdateMovieRequest extends Validator {
   public static async validate(req: Request, res: Response, next: NextFunction) {
@@ -37,6 +38,7 @@ export default class UpdateMovieRequest extends Validator {
           const movie = await Movie.findOne({
             _id: { $ne: req.params.id },
             title: title,
+            action: { $ne: ACTIONS.Deleted } 
           })
             .select("_id")
             .exec();

@@ -6,7 +6,7 @@ class Seeder {
   private seeders: any[] = [];
   private database: any = null;
 
-  public static getInstance(): Seeder {
+  public static getInstance() {
     if (!Seeder.instance) {
       Seeder.instance = new Seeder();
     }
@@ -48,7 +48,7 @@ class Seeder {
     });
   }
 
-  public async insertMany(Model: any, data: any[]): Promise<void> {
+  public async insertData(Model: any, data: any[]) {
     try {
       console.log(`====> inserting data ${Model.collection.name}`);
       await Model.insertMany(data);
@@ -58,7 +58,7 @@ class Seeder {
     }
   }
 
-  public async dropData(Model: any): Promise<void> {
+  public async dropData(Model: any) {
     try {
       console.log(`====> dropping data ${Model.collection.name}`);
       await Model.deleteMany({});

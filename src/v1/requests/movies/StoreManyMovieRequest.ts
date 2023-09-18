@@ -2,6 +2,7 @@ import { check, ValidationChain } from "express-validator";
 import { Request, Response, NextFunction } from "express";
 import Validator from "../../core/Validator";
 import Movie from "../../models/Movie";
+import { ACTIONS } from "../../utils/enums/ControllerEnum";
 
 export default class StoreManyMovieRequest extends Validator {
   public static async validate(req: Request, res: Response, next: NextFunction) {
@@ -29,7 +30,8 @@ export default class StoreManyMovieRequest extends Validator {
         .isString()
         .withMessage("title should be string")
         .custom(async (title, { req }) => {
-          const total: number = await Movie.countDocuments({ title: title }).select("_id").exec();
+          const total: number = await Movie.countDocuments({ title: title, action: { $ne: ACTIONS.Deleted } })
+            .select("_id").exec();
           // const total: number = await Movie.countDocuments({ title: { $in: titles } }).select("_id").exec();
 
           if (total > 0) {

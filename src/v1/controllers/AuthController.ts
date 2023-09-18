@@ -7,7 +7,7 @@ import { Request, Response } from "../core/Express";
 import Controller from "../core/Controller";
 import { MODULES, ACTIONS } from "../utils/enums/LogEnum";
 import { STATUSES } from "../utils/enums/UserEnum";
-import { TOKENS } from "../utils/enums/TokeEnum";
+import { TOKENS } from "../utils/enums/TokenEnum";
 
 export default class AuthController extends Controller {
   public static async login(req: Request, res: Response) {
@@ -30,16 +30,16 @@ export default class AuthController extends Controller {
       });
     }
 
-    const password_match = await PasswordHelper.verify(req.validated.password, user.password);
+    const password = await PasswordHelper.verify(req.validated.password, user.password);
 
-    if (!password_match) {
+    if (!password.success) {
       return res.status(StatusCodes.UNAUTHORIZED).json({
         message: "Invalid username or password",
       });
     }
 
     const encode = {
-      _id: user._id.toString(),
+      _id: user._id,
       name: user.name,
       username: user.name,
     };
@@ -47,12 +47,12 @@ export default class AuthController extends Controller {
     let tokens = {};
     const access = TokenHelper.generate(encode, TOKENS.Access);
     const refresh = TokenHelper.generate(encode, TOKENS.Refresh);
-    
-    if(access.success && refresh.success) {
+
+    if (access.success && refresh.success) {
       tokens = {
         access: access.token,
-        refresh: refresh.token
-      }
+        refresh: refresh.token,
+      };
     }
 
     super.log(
@@ -61,6 +61,12 @@ export default class AuthController extends Controller {
       ACTIONS.LoggedIn,
       `Logged in a user ${user.name} with id ${user._id}.`
     );
+
+    res.cookie("jwt", refresh?.token, {
+      httpOnly: true,
+      secure: true,
+      maxAge: 7 * 24 * 60 * 60 * 1000,
+    });
 
     return res.status(StatusCodes.OK).json({
       data: { tokens },
@@ -101,6 +107,16 @@ export default class AuthController extends Controller {
   }
 
   public static async logout(req: Request, res: Response) {
+
+    if(req.cookies) {
+      const cookies = req.cookies;
+
+      // if (!cookies?.jwt) {
+      //   return res.sendStatus(StatusCodes.NO_CONTENT);
+      // }
+      res.clearCookie('jwt', { httpOnly: true, secure: true })
+    }
+
     return res.status(StatusCodes.OK).json({
       message: "Logout successfully",
     });

@@ -2,10 +2,10 @@ import rateLimit from "express-rate-limit";
 import LoggerService from "../services/LoggerService";
 
 export default class LimiterMiddleware {
-  static handle() {
+  public static handle() {
     return rateLimit({
       windowMs: 60 * 1000, // 1 minute
-      max: process.env.LIMITER_MAX, // Limit each IP to 5 login requests per `window` per minute
+      max: process.env.REQUEST_LIMITER ? parseInt(process.env.REQUEST_LIMITER) : 5,
       message: {
         message: "Too many login attempts from this IP, please try again after a 60 second pause",
       },

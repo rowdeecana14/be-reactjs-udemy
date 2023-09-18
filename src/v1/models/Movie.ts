@@ -1,22 +1,12 @@
 import mongoose from "mongoose";
 import moment from "moment";
-import { STATUSES } from "../utils/enums/MovieEnum";
+import { STATUSES, ACTIONS } from "../utils/enums/MovieEnum";
 
 const schema = new mongoose.Schema(
   {
     title: {
       type: String,
       require: true,
-    },
-    release_at: {
-      type: String,
-      require: true,
-      set: function (value: string) {
-        if (value) {
-          return moment(value).format("YYYY-MM-DD");
-        }
-        return value;
-      },
     },
     summary: {
       type: String,
@@ -32,11 +22,57 @@ const schema = new mongoose.Schema(
       enum: Object.values(STATUSES), 
       default: STATUSES.Pending, 
     },
-    // updated: { type: Date, default: Date.now },
+    release_at: {
+      type: String,
+      require: true,
+      set: function (value: string) {
+        if (value) {
+          return moment(value).format("YYYY-MM-DD");
+        }
+        return value;
+      },
+    },
+    action: {
+      type: String,
+      require: true,
+      enum: Object.values(ACTIONS), 
+      default: ACTIONS.Created, 
+    },
+    created_by: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'User',
+      require: false,
+      default: null, 
+    },
+    updated_by: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'User',
+      require: false,
+      default: null, 
+    },
+    deleted_by: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'User',
+      require: false,
+      default: null, 
+    },
+    created_at: {
+      type: Date,
+      require: true,
+      default: Date.now, 
+    },
+    updated_at: {
+      type: Date,
+      require: false,
+      default: null, 
+    },
+    deleted_at: {
+      type: Date,
+      require: false,
+      default: null, 
+    },
   },
   { 
-    timestamps: { createdAt: "created_at", updatedAt: "updated_at" },
-    modelName: 'Movie',  
     collection: 'movies' 
   },
 );

@@ -4,7 +4,7 @@ import Seeder from "../../core/Seeder";
 
 export default class MovieSeeder {
   public async up(): Promise<void> {
-    await Seeder.insertMany(Movie, data);
+    await Seeder.insertData(Movie, data);
   }
 
   public async down(): Promise<void> {

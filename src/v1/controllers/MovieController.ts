@@ -1,9 +1,10 @@
 import { StatusCodes } from "http-status-codes";
 import Movie from "../models/Movie";
-import { Request, Response } from "../core/Express";
+import { Request, Response, NextFunction } from "../core/Express";
 import Pagination from "../core/Pagination";
 import Controller from "../core/Controller";
 import { ACTIONS, MODULES } from "../utils/enums/LogEnum";
+import { ACTIONS as C_ACTIONS } from "../utils/enums/ControllerEnum";
 // import models from "../models/Model";
 // const { Movie, Log } = models;
 
@@ -11,19 +12,29 @@ export default class MovieController extends Controller {
   // @desc    List of movies
   // @route   GET /v1/api/movies
   // @access  Public
-  public static async all(req: Request, res: Response) {
-    const { filters, sort, skip, limit, pagination } = await Pagination.paginate(
+  public static async all(req: Request, res: Response, next: NextFunction) {
+    const { sort, skip, limit, pagination } = await Pagination.paginate(
       Movie,
-      ["title", "summary"],
       req.validated
     );
+    let filters = {};
+
+    if(req.validated.search !== "") {
+      filters = {
+        title: { $regex: new RegExp(req.validated.search, "i") },
+        summary: { $regex: new RegExp(req.validated.search, "i") },
+        action: { $ne: C_ACTIONS.Deleted },
+      }
+    }
 
     const movies = await Movie.find(filters)
-      .select(["_id", "title", "summary", "url", "release_at", "status"])
+      .select(["_id", "title", "summary", "url", "release_at", "status", "created_by"])
       .sort(sort)
       .skip(skip)
       .limit(limit)
+      .lean()
       .exec();
+
 
     return res.status(StatusCodes.OK).json({
       message: "Movies successfully fetched.",
@@ -38,7 +49,11 @@ export default class MovieController extends Controller {
   // @route   POST /v1/api/movies
   // @access  Public
   public static async store(req: Request, res: Response) {
-    const movie = await Movie.create(req.validated);
+    const auth = super.action(req, C_ACTIONS.Created);
+    const movie = await Movie.create({
+      ...req.validated,
+      ...auth
+    });
     await super.log(
       req,
       MODULES.Movies,
@@ -71,7 +86,15 @@ export default class MovieController extends Controller {
   // @access  Public
   public static async update(req: Request, res: Response) {
     const { id, ...data } = req.validated;
-    await Movie.updateOne({ _id: id }, data).exec();
+    const auth = super.action(req, C_ACTIONS.Updated);
+
+    await Movie.updateOne(
+      { _id: id }, 
+      { 
+        ...data, 
+        ...auth
+      }
+    ).exec();
 
     return res.status(StatusCodes.OK).json({
       data: { id: id },
@@ -84,7 +107,10 @@ export default class MovieController extends Controller {
   // @access  Public
   public static async delete(req: Request, res: Response) {
     const { id } = req.validated;
-    await Movie.deleteOne({ _id: id });
+    const auth = super.action(req, C_ACTIONS.Deleted);
+    // await Movie.deleteOne({ _id: id });
+
+    await Movie.updateOne({ _id: id }, auth).exec();
 
     return res.status(StatusCodes.OK).json({
       data: { id },
@@ -110,11 +136,14 @@ export default class MovieController extends Controller {
   // @access  Public
   public static async status(req: Request, res: Response) {
     const { ids, status } = req.validated;
+    const auth = super.action(req, C_ACTIONS.Updated);
+
     await Movie.updateMany(
       { _id: { $in: ids } },
       {
         $set: {
           status: status,
+          ...auth
         },
       }
     );
@@ -131,13 +160,17 @@ export default class MovieController extends Controller {
   // @route   POST /v1/api/movies/bulk
   // @access  Public
   public static async storeMany(req: Request, res: Response) {
-    const movies = await Movie.insertMany(req.validated.movies);
-    const data = movies.map((movie: any) => {
+    const auth = super.action(req, C_ACTIONS.Created);
+    const data = req.validated.movies.map((movie: any) => {
+      return { ...movie, ...auth}
+    });
+    const movies = await Movie.insertMany(data);
+    const ids = movies.map((movie: any) => {
       return { _id: movie._id };
     });
 
     return res.status(StatusCodes.OK).json({
-      data: data,
+      data: { ids },
       message: "Movie successfully created.",
     });
   }
@@ -147,10 +180,12 @@ export default class MovieController extends Controller {
   // @access  Public
   public static async updateMany(req: Request, res: Response) {
     const movies: any[] = req.validated.movies || [];
+    const auth = super.action(req, C_ACTIONS.Updated);
 
     const promise = movies.map(async (movie) => {
       const { id, ...data } = movie;
-      await Movie.updateOne({ _id: id }, data).exec();
+      const updated = { ...data, ...auth };
+      await Movie.updateOne({ _id: id }, updated).exec();
 
       return { id: movie.id };
     });

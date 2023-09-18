@@ -13,13 +13,17 @@ class Database {
     return Database.instance;
   }
 
-  public async connect(uri: string): Promise<Connection | undefined> {
+  public async connect(uri: string) {
     try {
       console.log("Connecting to mongodb.");
       await mongoose.connect(uri);
       this.connection = mongoose.connection;
       console.log("Connected to mongodb.");
 
+      if(process.env.NODE_ENV  === "development") {
+        mongoose.set('debug', true)
+      }
+ 
       this.connection.on("close", () => {
         console.log("MongoDB connection closed.");
       });

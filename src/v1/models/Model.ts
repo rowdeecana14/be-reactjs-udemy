@@ -13,7 +13,7 @@ fs.readdirSync(__dirname)
     );
   })
   .forEach(async (file) => {
-    const name = file.replace('.ts', '').replace('.ts', '');
+    const name = file.replace('.js', '').replace('.ts', '');
     const model = await import(`./${file}`);
     models[name] = model.default;
   });

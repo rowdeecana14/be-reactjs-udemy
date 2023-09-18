@@ -1,10 +1,10 @@
 import { StatusCodes } from "http-status-codes";
 import { Request, Response, NextFunction } from "../core/Express";
 import TokenHelper from "../helpers/TokenHelper";
-import { TOKENS } from "../utils/enums/TokeEnum";
+import { TOKENS } from "../utils/enums/TokenEnum";
 
 export default class AuthMiddleware {
-  static handle() {
+  public static handle() {
     return async (req: Request, res: Response, next: NextFunction) => {
       try {
         const token: any = req.headers?.authorization?.split(" ")[1] || req.query?.token || null;

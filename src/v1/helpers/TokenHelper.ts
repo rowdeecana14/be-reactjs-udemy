@@ -1,6 +1,7 @@
 import jwt from "jsonwebtoken";
-import { TOKENS } from "../utils/enums/TokeEnum";
+import mongoose from "mongoose";
 import dotenv from "dotenv";
+import { TOKENS } from "../utils/enums/TokenEnum";
 dotenv.config();
 
 interface ITypes {
@@ -14,21 +15,9 @@ interface ITypes {
 }
 
 interface IData {
-  _id?: string,
+  _id?: any,
   name?: string;
   username?: string;
-}
-
-interface IGenerate {
-  success: boolean;
-  token?: string;
-  message?: string;
-}
-
-interface IVerify {
-  success: boolean;
-  data?: any;
-  message?: string;
 }
 
 export default class TokenHelper {
@@ -60,7 +49,7 @@ export default class TokenHelper {
     };
   }
 
-  public static generate(data: IData, type: TOKENS, expiration?: string): IGenerate {
+  public static generate(data: IData, type: TOKENS, expiration?: string) {
     try {
       this.loadEnv();
 
@@ -70,8 +59,6 @@ export default class TokenHelper {
           message: "Hash type not exist.",
         };
       }
-
-      console.log(this.types)
 
       const Type = this.types[type];
       const secret: jwt.Secret = Type.secret;
@@ -92,7 +79,7 @@ export default class TokenHelper {
     }
   }
 
-  static async verify(token: string, type: TOKENS): Promise<IVerify> {
+  static async verify(token: string, type: TOKENS) {
     try {
       this.loadEnv();
 

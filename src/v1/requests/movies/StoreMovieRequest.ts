@@ -2,6 +2,7 @@ import { check, ValidationChain } from "express-validator";
 import { Request, Response, NextFunction } from "express";
 import Validator from "../../core/Validator";
 import Movie from "../../models/Movie";
+import { ACTIONS } from "../../utils/enums/ControllerEnum";
 
 export default class StoreMovieRequest extends Validator {
   public static async validate(req: Request, res: Response, next: NextFunction) {
@@ -14,7 +15,8 @@ export default class StoreMovieRequest extends Validator {
         .withMessage("title should be string")
         .bail()
         .custom(async (title, { req }) => {
-          const movie = await Movie.findOne({ title: title }).select("_id").exec();
+          const movie = await Movie.findOne({ title: title, action: { $ne: ACTIONS.Deleted } })
+            .select("_id").exec();
 
           if (movie) {
             return Promise.reject("title already exists in database.");

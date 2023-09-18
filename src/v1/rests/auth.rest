@@ -9,7 +9,7 @@ Accept: application/json
 
 {
     "username": "rudy.cana@gmail.com",
-    "password": "password"
+    "password": "Rowdee@14"
 }
 
 
@@ -19,74 +19,11 @@ Content-Type: application/json
 Accept: application/json
 
 {
-  "name" : "Rudy Canssdasss",
-  "email" : "rudy.cansssdsssa@gmail.com",
+  "name" : "Rudy Cana",
+  "email" : "rudy.cana@gmail.com",
   "password": "Rowdee@14",
   "confirm_password": "Rowdee@14"
 }
-
-### REFRESH TOKEN
-GET {{baseurl}}/auth/token HTTP/1.1
-Content-Type: application/json
-Accept: application/json
-
-
-### USER PROFILE
-GET {{baseurl}}/auth/profile
-Authorization: Bearer {{token}}
-Content-Type: application/json
-Accept: application/json
-
-
-### GET USER DETIALS FOR PASSWORD CHECKING
-GET {{baseurl}}/auth/user
-Authorization: Bearer {{token}}
-Content-Type: application/json
-Accept: application/json
-
-
-// USER PROFILE
-// GET {{baseurl}}/auth/profile/files{{system_name}}
-// system_name = UP-20230316-210303.pdf
-### VIEW ONE FILE USER PROFILE
-GET {{baseurl}}/auth/profile/files/PR-20230630-212321.jpg HTTP/1.1
-Authorization: Bearer {{token}}
-Content-Type: application/json
-Accept: application/json
-
-
-### USER PROFILE
-PUT {{baseurl}}/auth/profile HTTP/1.1
-Authorization: Bearer {{token}}
-Content-Type: application/json
-Accept: application/json
-
-{
-		"name" : "Rudy Cana updated",
-    "password": "password",
-    "confirm_password": "password"
-}
-
-### UPDATE USER PASSWORD
-// USE LINK TOKEN
-PUT {{baseurl}}/auth/password HTTP/1.1
-Authorization: Bearer {{token}}
-Content-Type: application/json
-Accept: application/json
-
-### UPLOAD USER PROFILE
-PUT {{baseurl}}/auth/profile/upload
-Authorization: Bearer {{token}}
-Content-Type: multipart/form-data; boundary=uploadboundery
-Content-Length: [actual-content-length]
-
---uploadboundery
-Content-Disposition: form-data; name="profile"; filename="profile.jpg"
-
-
-< ./profile.jpg
---uploadboundery--
-
 
 
 ### USER LOGOUT

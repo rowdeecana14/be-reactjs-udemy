@@ -1,13 +1,13 @@
 import dotenv from "dotenv";
 dotenv.config();
 
-const ENVIRONMENT = process.env.NODE_ENV || "development";
-const DB_DIALECT = process.env.DB_DIALECT || "mongodb";
-const DB_NAME = process.env.DB_NAME || "mongodb";
-const DB_HOST = process.env.DB_HOST || "localhost";
-const DB_PORT = process.env.DB_PORT || "27017";
+export const ENVIRONMENT = process.env.NODE_ENV || "development";
+export const DB_DIALECT = process.env.DB_DIALECT || "mongodb";
+export const DB_NAME = process.env.DB_NAME || "mongodb";
+export const DB_HOST = process.env.DB_HOST || "localhost";
+export const DB_PORT = process.env.DB_PORT || "27017";
 
-interface IConfigs {
+export interface IConfigs {
   [key: string]: {
     port: string | number;
     database: string;

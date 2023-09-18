@@ -35,7 +35,8 @@ export default class Validator {
     });
   }
 
-  static validated<T>(req: Request): Record<string, T> {
+  // : Record<string, T>
+  static validated<T>(req: Request) {
     const validated = matchedData(req, { includeOptionals: false });
 
     return Object.entries(validated).reduce((acc, [key, value]) => {

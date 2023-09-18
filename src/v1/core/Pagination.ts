@@ -7,21 +7,6 @@ export interface IPagination {
   to: number;
 }
 
-export interface IPaginate {
-  filters: any,
-  search: string,
-  sort: any[];
-  limit: number;
-  skip: number;
-  pagination: {
-    page: number;
-    pages: number;
-    limit: number;
-    total: number;
-    from: number;
-    to: number;
-  };
-}
 
 export default class Pagination {
   public static filters(fields: any, validated: any) {
@@ -51,14 +36,13 @@ export default class Pagination {
     return [[sort_col, sort_dir]];
   }
 
-  public static async paginate(Model: any, filters: string[], validated: any): Promise<IPaginate> {
+  public static async paginate(Model: any, validated: any) {
     const page: number = parseInt(validated.page || 1);
     const limit: number = parseInt(validated.limit || 10);
     const skip: number = (page - 1) * limit;
 
     return {
       search: validated.search || "",
-      filters: this.filters(filters, validated),
       sort: this.sort(validated),
       limit: limit,
       skip: skip,

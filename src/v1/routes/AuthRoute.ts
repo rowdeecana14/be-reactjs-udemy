@@ -6,6 +6,6 @@ import AuthController from "../controllers/AuthController";
 const routes = Router();
 routes.post("/login", LoginAuthRequest.validate, AuthController.login);
 routes.post("/register", RegisterAuthRequest.validate, AuthController.register);
-routes.post("/logout", LoginAuthRequest.validate, AuthController.logout);
+routes.post("/logout", AuthController.logout);
 
 export const AuthRoute = { routes };

@@ -1,8 +1,8 @@
 @baseurl = http://127.0.0.1:1010/api/v1
-@token =  eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NTA0NzFjZDIwNTA5ZDM3ZjQwZGQzOGMiLCJuYW1lIjoiUnVkeSBDYW5hIiwidXNlcm5hbWUiOiJSdWR5IENhbmEiLCJpYXQiOjE2OTQ3OTQyMzEsImV4cCI6MTY5NDg4MDYzMX0.Hwn2_Oygo1IcOgwymjNqsxORB3xLWHOKLZ5Ref5s12M
+@token =  eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NTA0NzFjZDIwNTA5ZDM3ZjQwZGQzOGMiLCJuYW1lIjoiUnVkeSBDYW5hIiwidXNlcm5hbWUiOiJSdWR5IENhbmEiLCJpYXQiOjE2OTUwMzQ4NzYsImV4cCI6MTY5NTEyMTI3Nn0.uMFC9QBlams5GOtWhTpdeS-DXLQrHbvyEa64YRGMFsU
 
 ### ALL MOVIES
-GET  {{baseurl}}/movies?search=&sort_dir=DESC&sort_col=summary&page=2&limit=10 HTTP/1.1
+GET  {{baseurl}}/movies?search=&sort_dir=DESC&sort_col=summary&page=1&limit=10 HTTP/1.1
 Authorization: Bearer {{token}}
 Content-Type: application/json
 Accept: application/json
@@ -22,20 +22,20 @@ Content-Type: application/json
 Accept: application/json
 
 {
-  "title" : "search 3ssssSssS",
+  "title" : "search 3ssssSssSssS",
   "summary" : "This is summary",
   "url": "https://www.youtube.com/watch?v=ACudfAWUYzc",
   "release_at" : "2023-09-10"
 }
 
 ### UPDATE ONE MOVIE
-PUT  {{baseurl}}/movies/6503dad3489ee457c559546a HTTP/1.1
+PUT  {{baseurl}}/movies/650846478643ac555b8001a4 HTTP/1.1
 Authorization: Bearer {{token}}
 Content-Type: application/json
 Accept: application/json
 
 {
-  "title" : "search updated",
+  "title" : "search updasted",
   "summary" : "This is summary updated",
   "url": "https://www.youtube.com/watch?v=ACudfAWUYzc",
   "release_at" : "2023-09-10"
@@ -43,7 +43,7 @@ Accept: application/json
 
 
 ### DELETE ONE MOVIE
-DELETE  {{baseurl}}/movies/6503dad3489ee457c559546a HTTP/1.1
+DELETE  {{baseurl}}/movies/6508480b0f833d9b8c254cd1 HTTP/1.1
 Authorization: Bearer {{token}}
 Content-Type: application/json
 Accept: application/json
@@ -57,8 +57,7 @@ Accept: application/json
 
 {
   "ids" : [
-    "650178d8ad17bd34cebf7cbb", "65017f1660883b4fb0079e1b",
-    "65017f1660883b4fb0079e1e", "65017f1660883b4fb0079e1f"
+    "65086d9e22a46f472bacba32", "65086d9c22a46f472bacba2d"
     ]
 }
 
@@ -69,7 +68,7 @@ Content-Type: application/json
 Accept: application/json
 
 {
-  "ids" : ["650178d8ad17bd34cebf7cbb", "65017f1660883b4fb0079e1b"],
+  "ids" : ["65086d9e22a46f472bacba32", "65086d9c22a46f472bacba2d"],
   "status": "Completed"
 }
 
@@ -125,14 +124,14 @@ Accept: application/json
 {
   "movies": [
     {
-      "id": "6503db50489ee457c5595489",
+      "id": "650870b93fa47bb0bb9aa3eb",
       "title" : "title 10 updated",
       "summary" : "summary 1 updated",
       "url": "https://www.youtube.com/watch?v=ACudfAWUYzc",
       "release_at" : "2023-09-10"
     },
     {
-      "id": "65017f1660883b4fb0079e1b",
+      "id": "650870b93fa47bb0bb9aa3ec",
       "title" : "title 43 updated",
       "summary" : "summary 2 updated",
       "url": "https://www.youtube.com/watch?v=ACudfAWUYzc",
